@@ -1,6 +1,7 @@
 from core.db import db
 from utils.security.hash import hash_data
 
+
 class UserModel(db.Model):
     """The model related to users.
 
