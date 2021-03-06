@@ -1,5 +1,5 @@
 # Mangee Flask-RESTful
-Mangee Flask-RESTful is a framework designed to simplify the process of building scalable Flask applications.
+Mangee Flask-RESTful is a template/framework designed to simplify the process of building scalable RESTful Flask applications.
 
 # Getting Started
 
