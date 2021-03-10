@@ -2,8 +2,8 @@ from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt import jwt_required
-from models.user import UserModel
 from resources.user_register import UserRegister
+from resources.demo import Demo
 from utils.http_server.simple_server import server
 from core.jwt import init_jwt
 from core.db import init_db, db
@@ -22,7 +22,7 @@ init_jwt(app)
 
 # Set up the path for registeration
 api.add_resource(UserRegister, '/api/register')
-
+api.add_resource(Demo, '/api/demo')
 
 @app.before_first_request
 def create_tables():
