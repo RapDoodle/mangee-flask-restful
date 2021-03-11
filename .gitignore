@@ -1,5 +1,6 @@
 # Mangee
 web/
+data.db
 
 # IDE specific
 .vscode/
