@@ -32,6 +32,10 @@ class DemoModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
     def json(self):
         return {'id': self.id, 'value': self.value}
 

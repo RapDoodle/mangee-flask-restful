@@ -7,6 +7,8 @@ from resources.demo import Demo
 from utils.http_server.simple_server import server
 from core.jwt import init_jwt
 from core.db import init_db, db
+from logging import Formatter, FileHandler
+import logging
 import os
 
 # ================================================================
@@ -36,5 +38,10 @@ app.register_blueprint(server)
 
 # Spin up the server
 if __name__ == '__main__':
+    file_handler = FileHandler('app.log')
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(
+        Formatter('%(asctime)s %(levelname)s: %(message)s'))
+    app.logger.addHandler(file_handler)
     init_db(app)
     app.run(host='0.0.0.0', port=80, debug=True)

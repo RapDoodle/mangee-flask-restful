@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from models.demo import DemoModel
 from flask_jwt import jwt_required
+from flask import current_app
 
 
 class Demo(Resource):
@@ -39,6 +40,16 @@ class Demo(Resource):
             return {'result': jsoned}, 200
         
         return '', 204
+
+    def delete(self):
+        data = Demo.get_parser.parse_args()
+        current_app.logger.critical('test')
+        res = DemoModel.find_by_id(_id=data['id'])
+        if res is not None and isinstance(res, DemoModel):
+            res.delete()
+            return {'message': 'Deleted successfully.'}, 200
+
+        return {'message': 'Object not found.'}, 200
 
 
 
