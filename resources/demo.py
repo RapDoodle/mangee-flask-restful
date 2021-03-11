@@ -41,15 +41,13 @@ class Demo(Resource):
         
         return '', 204
 
+    @jwt_required()
     def delete(self):
         data = Demo.get_parser.parse_args()
-        current_app.logger.critical('test')
+        
         res = DemoModel.find_by_id(_id=data['id'])
         if res is not None and isinstance(res, DemoModel):
             res.delete()
             return {'message': 'Deleted successfully.'}, 200
 
         return {'message': 'Object not found.'}, 200
-
-
-

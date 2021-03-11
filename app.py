@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_jwt import jwt_required
 from resources.user_register import UserRegister
 from resources.demo import Demo
-from utils.http_server.simple_server import server
+from utils.http_server import server
 from core.jwt import init_jwt
 from core.db import init_db, db
 from logging import Formatter, FileHandler

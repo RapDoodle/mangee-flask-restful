@@ -2,7 +2,7 @@
 """This core module handles the initialization of JWT."""
 
 from flask_jwt import JWT
-from utils.auth.auth import authenticate, identity
+from utils.auth import authenticate, identity
 
 jwt = JWT(authentication_handler=authenticate, identity_handler=identity)
 

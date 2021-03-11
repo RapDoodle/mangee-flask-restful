@@ -1,5 +1,5 @@
 from core.db import db
-from utils.security.hash import hash_data
+from utils.hash import hash_data
 
 
 class UserModel(db.Model):
