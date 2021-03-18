@@ -1,0 +1,12 @@
+{
+    "DEBUG": true,
+    "SECRET_KEY": "THIS_SHOULD_BE_CHANGED",
+    "ENABLE_SIMPLE_HTTP_SERVER": true,
+    "RESTFUL_PREFIX": "/api",
+    "HOST": "0.0.0.0",
+    "PORT": 80,
+    "LOG_PATH": "./error.log",
+    "SQLALCHEMY_DATABASE_URI": "sqlite:///data.db",
+    "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+    "JWT_AUTH_URL_RULE": "/api/auth"
+}

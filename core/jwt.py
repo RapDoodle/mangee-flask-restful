@@ -13,6 +13,5 @@ def init_jwt(app):
     Args:
         app (flask.app.Flask): A Flask application
 
-    """
-    app.config['JWT_AUTH_URL_RULE'] = '/api/auth'
+    """    
     jwt.init_app(app)

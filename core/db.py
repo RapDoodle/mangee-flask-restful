@@ -20,8 +20,4 @@ def init_db(app):
         app (flask.app.Flask): A Flask application
 
     """
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['JWT_AUTH_URL_RULE'] = '/api/auth'
-
     db.init_app(app)
