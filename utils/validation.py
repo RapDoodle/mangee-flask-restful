@@ -89,8 +89,8 @@ def is_valid_length(d: str, min: int, max: int) -> bool:
             Otherwise, `False`.
 
     """
-    d = str(d)
-    return True if (len(d) >= min and len(d) <= max) else False
+    d_len = len(str(d))
+    return True if (d_len >= min and d_len <= max) else False
 
 def is_valid_username(
         d: str, min_len: int = 6, max_len: int = 24, 
