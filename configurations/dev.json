@@ -8,5 +8,6 @@
     "LOG_PATH": "./error.log",
     "SQLALCHEMY_DATABASE_URI": "sqlite:///data.db",
     "SQLALCHEMY_TRACK_MODIFICATIONS": false,
-    "JWT_AUTH_URL_RULE": "/api/auth"
+    "JWT_AUTH_URL_RULE": "/api/auth",
+    "DEFAULT_LANGUAGE": "en-US"
 }

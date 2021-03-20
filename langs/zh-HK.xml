@@ -1,0 +1,4 @@
+<resources>
+    <string name="internal_error">內部伺服器錯誤。</string>
+    <string name="404">找不到指定資源。</string>
+</resources>

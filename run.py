@@ -4,6 +4,7 @@ from resources.user_register import UserRegister
 from resources.demo import Demo
 from core.jwt import init_jwt
 from core.db import init_db, db
+from core.lang import init_lang
 from logging import Formatter, FileHandler
 
 from core.startup import create_app, load_config
@@ -41,6 +42,7 @@ if __name__ == '__main__':
         app.register_blueprint(server)
 
     init_db(app)
+    init_lang(app)
     
     app.run(host=app.config.get('HOST', '127.0.0.1'), 
         port=app.config.get('PORT', 5000))

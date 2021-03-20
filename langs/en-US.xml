@@ -1,0 +1,4 @@
+<resources>
+    <string name="internal_error">Server internal error.</string>
+    <string name="404">Not found.</string>
+</resources>
