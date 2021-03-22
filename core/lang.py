@@ -27,18 +27,27 @@ def init_lang(app):
     """The function initializes `lang` with the provided context.
 
     Args:
-        app (flask.app.Flask): A Flask application
+        app (flask.app.Flask): A Flask application.
 
     """
     lang.init_app(app)
 
     # Load language packs from LANGS_PATH
-    langs_list = [l.split('.')[0] for l in listdir(LANGS_PATH) if isfile(join(LANGS_PATH, l))]
+    langs_list = [l.split('.')[0] for l in listdir(LANGS_PATH) \
+        if isfile(join(LANGS_PATH, l))]
     for lang_name in langs_list:
         load_lang(lang_name)
 
 
-def load_lang(name):
+def load_lang(name: str):
+    """Loads a language resource file from the language path.
+
+    Args:
+        name (str): The name of the language resource file without
+            the suffix. For example, to load `en-US.xml`, the 
+            parameter should be `'en-US'`. 
+
+    """
     tree = ET.parse(join(LANGS_PATH, name+'.xml'))
     root = tree.getroot()
     current_dict = {}
@@ -48,7 +57,19 @@ def load_lang(name):
     lang_dict[name] = current_dict
 
 
-def get_str(key, language=None):
+def get_str(key: str, language=None):
+    """Get the string for a given or default language.
+
+        Args:
+            key (str): The key of the string (the attribute
+                "name" of the "string" tag). For example,
+            language (str): Could be a string or `None`.
+                When `None` is specified, the default 
+                language will be used. Otherwise, specify
+                the name of the langugae pack. For example,
+                `language = 'zh-HK'`.
+                
+    """
     if language is None:
         # When lang is None, use the default language
         language = current_app.config['DEFAULT_LANGUAGE']
