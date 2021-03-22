@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """The module provides functions related to startup routines."""
 
-CONFIG_PATH = './configurations'
-
+from utils.constants import CONFIG_PATH
 from flask import Flask
 from json import loads
 import os

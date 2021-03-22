@@ -24,7 +24,6 @@ server = Blueprint('http_server', __name__)
 
 @server.route('/<path:folder>/<path:file>', methods=['GET'])
 def send_static_file(folder, file):
-    print(folder, file)
     return send_from_directory(f'web/{folder}', file)
 
 

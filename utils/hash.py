@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""This module provides functions related to hashing.
-
-"""
+"""This module provides functions related to hashing."""
 
 import bcrypt
 
@@ -32,6 +30,4 @@ def verify_hash(data: str, hashed_data: bytes):
         bool: True if it is correct, False otherwise.
 
     """
-    if bcrypt.checkpw(data.encode('utf-8'), hashed_data):
-        return True
-    return False
+    return bcrypt.checkpw(data.encode('utf-8'), hashed_data)

@@ -38,6 +38,7 @@ def is_money(d: str) -> bool:
     """
     return verify_regex('^[0-9]+(\.[0-9]{1,2})?$', d)
 
+
 def is_rating(d: str):
     """Checks if the provided data is a valid rating.
 
@@ -91,6 +92,7 @@ def is_valid_length(d: str, min: int, max: int) -> bool:
     """
     d_len = len(str(d))
     return True if (d_len >= min and d_len <= max) else False
+
 
 def is_valid_username(
         d: str, min_len: int = 6, max_len: int = 24, 

@@ -16,8 +16,7 @@ from os import listdir
 from os.path import isfile, join
 from flask import current_app
 from flask_language import Language, current_language
-
-LANGS_PATH = './langs'
+from utils.constants import LANGUAGE_RESOURCE_PATH
 
 lang = Language()
 allowed_langs = []
@@ -32,29 +31,36 @@ def init_lang(app):
     """
     lang.init_app(app)
 
-    # Load language packs from LANGS_PATH
-    langs_list = [l.split('.')[0] for l in listdir(LANGS_PATH) \
-        if isfile(join(LANGS_PATH, l))]
-    for lang_name in langs_list:
-        load_lang(lang_name)
+    # Load language packs from LANGUAGE_RESOURCE_PATH
+    langs_list = [f for f in listdir(LANGUAGE_RESOURCE_PATH) \
+        if isfile(join(LANGUAGE_RESOURCE_PATH, f))]
+    for file_name in langs_list:
+        load_lang(file_name)
 
 
-def load_lang(name: str):
+def load_lang(file_name: str):
     """Loads a language resource file from the language path.
 
+    Note:
+        The file should be of type `.xml`. Resource files
+        of other types will not be accepted.
+
     Args:
-        name (str): The name of the language resource file without
-            the suffix. For example, to load `en-US.xml`, the 
-            parameter should be `'en-US'`. 
+        file_name (str): The file name of the language resource 
+            file with the suffix. For example, to load 
+            `en-US.xml`, the parameter should be `'en-US.xml'`. 
 
     """
-    tree = ET.parse(join(LANGS_PATH, name+'.xml'))
+    if not file_name.endswith('.xml'):
+        return
+    tree = ET.parse(join(LANGUAGE_RESOURCE_PATH, file_name))
     root = tree.getroot()
     current_dict = {}
+    lang_name = file_name.split('.xml')[0]
     for s in root.iter('string'):
         current_dict[s.attrib['name']] = s.text
-    allowed_langs.append(name)
-    lang_dict[name] = current_dict
+    allowed_langs.append(lang_name)
+    lang_dict[lang_name] = current_dict
 
 
 def get_str(key: str, language=None):
@@ -70,12 +76,13 @@ def get_str(key: str, language=None):
                 `language = 'zh-HK'`.
                 
     """
+    # When lang is None, use the default language
     if language is None:
-        # When lang is None, use the default language
         language = current_app.config['DEFAULT_LANGUAGE']
 
     # Not default language
-    if lang_dict.get(language, None) is not None and language is not current_app.config['DEFAULT_LANGUAGE']:
+    if lang_dict.get(language, None) is not None and \
+        language is not current_app.config['DEFAULT_LANGUAGE']:
         string = lang_dict[language].get(key, None)
         if string is not None:
             return string
@@ -104,8 +111,3 @@ def get_allowed_languages():
 @lang.default_language
 def get_default_language():
     return current_app.config['DEFAULT_LANGUAGE']
-
-
-if __name__ == '__main__':
-    
-    print(lang_dict)

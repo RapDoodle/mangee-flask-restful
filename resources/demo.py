@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 from flask_restful import Resource, reqparse
 from models.demo import DemoModel
 from flask_jwt import jwt_required
 from flask import current_app
-
+from core.lang import get_str
+from utils.exception import excpetion_handler
 
 class Demo(Resource):
     add_parser = reqparse.RequestParser()
@@ -23,6 +25,7 @@ class Demo(Resource):
                         )
 
     @jwt_required()
+    @excpetion_handler
     def post(self):
         data = Demo.add_parser.parse_args()
 
@@ -31,6 +34,7 @@ class Demo(Resource):
 
         return {'message': 'Object added successfully.'}, 201
 
+    @excpetion_handler
     def get(self):
         data = Demo.get_parser.parse_args()
 
@@ -42,6 +46,7 @@ class Demo(Resource):
         return '', 204
 
     @jwt_required()
+    @excpetion_handler
     def delete(self):
         data = Demo.get_parser.parse_args()
         

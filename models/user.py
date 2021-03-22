@@ -1,5 +1,10 @@
+# -*- coding: utf-8 -*-
+from flask_language import current_language
 from core.db import db
+from core.lang import get_str
 from utils.hash import hash_data
+from utils.exception import ErrorMessagePromise
+from utils.validation import is_valid_username, is_valid_password
 
 
 class UserModel(db.Model):
@@ -32,7 +37,11 @@ class UserModel(db.Model):
         username = str(username).strip()
         password = str(password).strip()
 
-        # TODO: Verification for the inputs
+        if not is_valid_username(username):
+            raise ErrorMessagePromise('INVALID_USERNAME')
+
+        if not is_valid_password(password):
+            raise ErrorMessagePromise('INVALID_PASSWORD')
 
         # Hash the password
         password_hash = hash_data(password)

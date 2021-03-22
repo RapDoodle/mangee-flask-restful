@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 from flask_restful import Resource, reqparse
+from utils.exception import excpetion_handler
 from models.user import UserModel
 
 
@@ -15,6 +17,7 @@ class UserRegister(Resource):
                         help='The password field cannot be empty.'
                         )
 
+    @excpetion_handler
     def post(self):
         data = UserRegister.parser.parse_args()
 

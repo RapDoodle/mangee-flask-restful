@@ -1,25 +1,74 @@
+# -*- coding: utf-8 -*-
+"""This module is related to exceptions and their handling."""
+
 from flask import current_app
 from flask_restful import abort
+from flask_language import current_language
+from core.lang import get_str
 from functools import wraps
 import sys, traceback
 
-class ValidationError(Exception):
-    """The exception will be raised when a validation failed in models"""
+
+class ErrorMessage(Exception):
+    """An error message expected to be shown to the front-end
+    
+    Note:
+        If the message needs to be translated. Consider using
+        `ErrorMessagePromise`
+    
+    """
 
     def __init__(self, message):
-        super().__init__(message)
+        """The constructor for ErrorMessage
 
-class ErrorMessage:
-    """The class is used to identify the status in the views"""
+        Args:
+            message (str): The message to be shown to the
+                front-end user.
 
-    def __init__(self, message):
+        """
         self.message = message
 
     def get(self):
+        """The getter of ErrorMessage"""
         return self.message
 
     def __str__(self):
+        """Strinify the object."""
         return self.message
+
+
+class ErrorMessagePromise(Exception):
+    """A promise that a key value will be translated.
+    
+    Note:
+        The promise only guarantees an attempt to get the
+        string for the language. It does not guarantee
+        that a string will be returned.
+    
+    """
+
+    def __init__(self, key: str):
+        """The constructor for ErrorMessagePromise
+
+        Args:
+            key (str): The key used to retrieve the string
+
+        """
+        self.key = key
+
+    def get(self):
+        """Get the string for the given key.
+
+        Returns:
+            A string of the translated message
+        
+        """
+        return self.__str__()
+
+    def __str__(self):
+        """Strinify the object."""
+        return get_str(self.key, current_language)
+
 
 def excpetion_handler(fn):
     """The decorator handles exceptions within the framework.
@@ -34,10 +83,10 @@ def excpetion_handler(fn):
     def handler(*args, **kwargs):
         try:
             return fn(*args, **kwargs)
-        except ValidationError as e:
+        except (ErrorMessage, ErrorMessagePromise) as e:
             abort(400, error=str(e))
         except Exception as e:
             current_app.logger.critical(str(e))
             traceback.print_exc(file=sys.stdout)
-            abort(500, 'Internal error.')
+            return {'error': get_str('internal_error', current_language)}, 500
     return handler

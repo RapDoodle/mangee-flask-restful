@@ -1,4 +1,6 @@
 <resources>
-    <string name="internal_error">Server internal error.</string>
-    <string name="404">Not found.</string>
+    <string name="INTERNAL_ERROR">Server internal error.</string>
+    <string name="NOT_FOUND">Not found.</string>
+    <string name="INVALID_USERNAME">Invalid username.</string>
+    <string name="INVALID_PASSWORD">Invalid password.</string>
 </resources>

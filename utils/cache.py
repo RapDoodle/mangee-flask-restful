@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 store = {}
 
 def get(key):
