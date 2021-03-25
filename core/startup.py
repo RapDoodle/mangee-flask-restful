@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 """The module provides functions related to startup routines."""
 
+import os
+import re
+import logging
+from datetime import timedelta
 from utils.constants import CONFIG_PATH
 from flask import Flask
 from json import loads
-import os
+from core.jwt import init_jwt
+from core.db import init_db, db
+from core.lang import init_lang
 
 
 def create_app(name: str, config: dict) -> Flask:
@@ -27,8 +33,49 @@ def create_app(name: str, config: dict) -> Flask:
     """
     app = Flask(name)
     for key in config.keys():
+        if key.startswith('_'):
+            # Parser of special configuration
+            value = config[key]
+            if isinstance(value, dict):
+                # Cases where direct parsing is not possible
+                func_type = value['type']
+                if func_type == 'timedelta':
+                    assert isinstance(value['args'], dict)
+                    value = timedelta(**value['args'])
+            elif isinstance(value, str):
+                # Reference with '@'
+                value = re.sub('@(RESTFUL_PREFIX)::*', \
+                    config['RESTFUL_PREFIX'], config[key])
+            # Remove the prefix '_' before storing into the config
+            app.config[key[1:]] = value
+            continue
         app.config[key] = config[key]
     return app
+
+
+def init_core_modules(app):
+    # Setup logger
+    file_handler = logging.FileHandler('app.log')
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(
+        logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
+    app.logger.addHandler(file_handler)
+
+    # Setting up flask-JWT
+    init_jwt(app)
+
+    # Setup database
+    init_db(app)
+    with app.app_context():
+        db.create_all()
+
+    # Simple HTTP server. Not recommended in production.
+    if (app.config.get('ENABLE_SIMPLE_HTTP_SERVER', False)):
+        from utils.http_server import server
+        app.register_blueprint(server)
+
+    # Initialize the launguage system.
+    init_lang(app)
 
 
 def load_config(name: str) -> dict:
@@ -50,3 +97,8 @@ def load_config(name: str) -> dict:
     
     """
     return loads(open(os.path.join(CONFIG_PATH, name+'.json'), 'r').read())
+
+
+def run(app):
+    app.run(host=app.config.get('HOST', '127.0.0.1'), 
+        port=app.config.get('PORT', 5000))

@@ -21,9 +21,7 @@ def verify_regex(regex: str, d: str) -> bool:
         bool: `True` if matches. Otherwise, `False`.
 
     """
-    d = str(d)
-    regex = re.compile(regex)
-    return False if regex.match(d) is None else True
+    return False if re.match(regex, d) is None else True
 
 
 def is_money(d: str) -> bool:
