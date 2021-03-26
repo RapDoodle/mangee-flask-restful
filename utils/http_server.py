@@ -21,6 +21,8 @@ from flask import Blueprint, send_from_directory
 
 server = Blueprint('http_server', __name__)
 
+print(' * WARNING: Do NOT use this HTTP server in production!')
+
 
 @server.route('/<path:folder>/<path:file>', methods=['GET'])
 def send_static_file(folder, file):

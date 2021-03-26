@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from flask_restful import Api
-
 import sys
+
+# Flask modules
+from flask_restful import Api
 
 # Core modules
 from core.startup import create_app, load_config, init_core_modules, run
@@ -23,7 +24,7 @@ if __name__ == '__main__':
 
     # Set up the path RESTful services
     api.add_resource(UserRegister, app.config['RESTFUL_PREFIX']+'/register')
-    api.add_resource(Demo, app.config['RESTFUL_PREFIX']+'/api/demo')
+    api.add_resource(Demo, app.config['RESTFUL_PREFIX']+'/demo')
     
     # Spin up the server
     run(app)

@@ -37,6 +37,11 @@ def init_lang(app):
     for file_name in langs_list:
         load_lang(file_name)
 
+    # Check if the field DEFAULT_LANGUAGE is not set
+    default_lang = app.config.get('DEFAULT_LANGUAGE', None)
+    if default_lang is None:
+        raise Exception('Default language not specified in the configuration')
+
 
 def load_lang(file_name: str):
     """Loads a language resource file from the language path.
@@ -86,7 +91,8 @@ def get_str(key: str, language=None):
         string = lang_dict[language].get(key, None)
         if string is not None:
             return string
-        current_app.logger.warning(f'Key "{key}" is not implemented in {language}.xml.')
+        current_app.logger.warning(
+            f'Key "{key}" is not implemented in {language}.xml.')
     
     # Use default language
     language = current_app.config['DEFAULT_LANGUAGE']
@@ -95,19 +101,35 @@ def get_str(key: str, language=None):
         if string is not None:
             return string
         else:
-            current_app.logger.warning(f'Key "{key}" is not implemented in {language}.xml.')
+            current_app.logger.warning(
+                f'Key "{key}" is not implemented in {language}.xml.')
             return ''
     else:
-        current_app.logger.critical(f'Default language {language} is not found.')
+        current_app.logger.critical(
+            f'Default language {language} is not found.')
     
     return ''
 
 
 @lang.allowed_languages
 def get_allowed_languages():
+    """Get the allowed languages.
+    
+    Note:
+        The function will return an empty list if the language
+        module has not been initilized (`init_lang`) not called.
+    
+    """
     return allowed_langs
 
 
 @lang.default_language
 def get_default_language():
+    """Gets the default languages.
+    
+    Note:
+        After initializing the language module, this function is
+        guaranteed to return the configured default language.
+    
+    """
     return current_app.config['DEFAULT_LANGUAGE']

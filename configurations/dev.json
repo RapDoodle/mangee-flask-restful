@@ -8,12 +8,13 @@
     "LOG_PATH": "./error.log",
     "SQLALCHEMY_DATABASE_URI": "sqlite:///data.db",
     "SQLALCHEMY_TRACK_MODIFICATIONS": false,
-    "_JWT_AUTH_URL_RULE": "@RESTFUL_PREFIX::/auth",
+    "@JWT_AUTH_URL_RULE": "@RESTFUL_PREFIX::/auth",
     "DEFAULT_LANGUAGE": "en-US",
-    "_PERMANENT_SESSION_LIFETIME": {
+    "@PERMANENT_SESSION_LIFETIME": {
         "type": "timedelta",
         "args": {
             "days": 31
         }
-    }
+    },
+    "JWT_TOKEN_LOCATION": ["cookies"]
 }

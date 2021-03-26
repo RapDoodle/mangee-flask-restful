@@ -33,7 +33,7 @@ def create_app(name: str, config: dict) -> Flask:
     """
     app = Flask(name)
     for key in config.keys():
-        if key.startswith('_'):
+        if key.startswith('@'):
             # Parser of special configuration
             value = config[key]
             if isinstance(value, dict):
@@ -46,7 +46,7 @@ def create_app(name: str, config: dict) -> Flask:
                 # Reference with '@'
                 value = re.sub('@(RESTFUL_PREFIX)::*', \
                     config['RESTFUL_PREFIX'], config[key])
-            # Remove the prefix '_' before storing into the config
+            # Remove the prefix '@' before storing into the config
             app.config[key[1:]] = value
             continue
         app.config[key] = config[key]
@@ -54,6 +54,22 @@ def create_app(name: str, config: dict) -> Flask:
 
 
 def init_core_modules(app):
+    """Initializes the core modules for the given context.
+
+    It initializes the following plugins/functions in order:
+        1). Launguage system
+        2). Logger
+        3). Flask-JWT-Extended
+        4). Flask-SQLAlchemy
+        5). HTTP server (testing only)
+    
+    Args:
+        app (flask.app.Flask): A Flask application
+
+    """
+    # Initialize the launguage system.
+    init_lang(app)
+
     # Setup logger
     file_handler = logging.FileHandler('app.log')
     file_handler.setLevel(logging.DEBUG)
@@ -73,9 +89,6 @@ def init_core_modules(app):
     if (app.config.get('ENABLE_SIMPLE_HTTP_SERVER', False)):
         from utils.http_server import server
         app.register_blueprint(server)
-
-    # Initialize the launguage system.
-    init_lang(app)
 
 
 def load_config(name: str) -> dict:
@@ -100,5 +113,11 @@ def load_config(name: str) -> dict:
 
 
 def run(app):
+    """Spins up a Flask application.
+    
+    Args:
+        app (flask.app.Flask): A Flask application
+
+    """
     app.run(host=app.config.get('HOST', '127.0.0.1'), 
         port=app.config.get('PORT', 5000))
