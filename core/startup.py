@@ -87,8 +87,8 @@ def init_core_modules(app):
 
     # Simple HTTP server. Not recommended in production.
     if (app.config.get('ENABLE_SIMPLE_HTTP_SERVER', False)):
-        from utils.http_server import server
-        app.register_blueprint(server)
+        from utils.http_server import init_http_server
+        init_http_server(app)
 
 
 def load_config(name: str) -> dict:

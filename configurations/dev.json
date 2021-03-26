@@ -16,5 +16,10 @@
             "days": 31
         }
     },
-    "JWT_TOKEN_LOCATION": ["cookies"]
+    "JWT_TOKEN_LOCATION": ["cookies"],
+    "HTTP_SERVER_INDEX_REDIRECT": false,
+    "HTTP_SERVER_INDEX_PAGE": "index.html",
+    "HTTP_SERVER_404_REDIRECT": "",
+    "HTTP_SERVER_REWRITE_ENGINE": true,
+    "HTTP_SERVER_REWRITE_BASE": ""
 }
