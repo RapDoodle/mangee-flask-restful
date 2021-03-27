@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """This core module handles the initialization of JWT."""
 
-from flask_jwt import JWT
-from utils.auth import authenticate, identity
+from flask_jwt_extended import JWTManager
 
-jwt = JWT(authentication_handler=authenticate, identity_handler=identity)
+from utils.auth import authenticate
+from utils.auth import identity
+
+jwt = JWTManager()
 
 
 def init_jwt(app):

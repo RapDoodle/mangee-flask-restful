@@ -9,7 +9,9 @@ from core.startup import create_app, load_config, init_core_modules, run
 
 # User defined resources
 from resources.user_register import UserRegister
-from resources.demo import Demo
+from resources.demo_resource import DemoResource
+from resources.user_login import UserLogin
+from resources.user_logout import UserLogout
 
 
 if __name__ == '__main__':
@@ -24,7 +26,9 @@ if __name__ == '__main__':
 
     # Set up the path RESTful services
     api.add_resource(UserRegister, app.config['RESTFUL_PREFIX']+'/register')
-    api.add_resource(Demo, app.config['RESTFUL_PREFIX']+'/demo')
+    api.add_resource(DemoResource, app.config['RESTFUL_PREFIX']+'/demo')
+    api.add_resource(UserLogin, app.config['RESTFUL_PREFIX']+'/login')
+    api.add_resource(UserLogout, app.config['RESTFUL_PREFIX']+'/logout')
     
     # Spin up the server
     run(app)

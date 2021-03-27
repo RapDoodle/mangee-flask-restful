@@ -11,11 +11,14 @@ Note:
 
 """
 
-import xml.etree.ElementTree as ET
 from os import listdir
 from os.path import isfile, join
+import xml.etree.ElementTree as ET
+
 from flask import current_app
-from flask_language import Language, current_language
+from flask_language import Language
+from flask_language import current_language
+
 from utils.constants import LANGUAGE_RESOURCE_PATH
 
 lang = Language()
@@ -68,29 +71,30 @@ def load_lang(file_name: str):
     lang_dict[lang_name] = current_dict
 
 
-def get_str(key: str, language=None):
+def get_str(key: str, language=None, **kwargs):
     """Get the string for a given or default language.
 
         Args:
             key (str): The key of the string (the attribute
                 "name" of the "string" tag). For example,
             language (str): Could be a string or `None`.
-                When `None` is specified, the default 
-                language will be used. Otherwise, specify
-                the name of the langugae pack. For example,
-                `language = 'zh-HK'`.
+                When `None` is specified, the language set
+                in the user cookie will be used. Otherwise, 
+                specify the name of the langugae pack. For 
+                example, `language = 'zh-HK'`.
                 
     """
     # When lang is None, use the default language
     if language is None:
-        language = current_app.config['DEFAULT_LANGUAGE']
+        language = current_language
+        # language = current_app.config['DEFAULT_LANGUAGE']
 
     # Not default language
     if lang_dict.get(language, None) is not None and \
         language is not current_app.config['DEFAULT_LANGUAGE']:
         string = lang_dict[language].get(key, None)
         if string is not None:
-            return string
+            return resolve_template(string, **kwargs)
         current_app.logger.warning(
             f'Key "{key}" is not implemented in {language}.xml.')
     
@@ -99,7 +103,7 @@ def get_str(key: str, language=None):
     if lang_dict.get(language, None) is not None:
         string = lang_dict[language].get(key, None)
         if string is not None:
-            return string
+            return resolve_template(string, **kwargs)
         else:
             current_app.logger.warning(
                 f'Key "{key}" is not implemented in {language}.xml.')
@@ -109,6 +113,10 @@ def get_str(key: str, language=None):
             f'Default language {language} is not found.')
     
     return ''
+
+
+def resolve_template(template: str, **kwargs):
+    return template % kwargs
 
 
 @lang.allowed_languages

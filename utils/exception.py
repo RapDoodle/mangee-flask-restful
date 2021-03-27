@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 """This module is related to exceptions and their handling."""
+import sys
+import traceback
 
 from flask import current_app
 from flask_restful import abort
 from flask_language import current_language
+
 from core.lang import get_str
 from functools import wraps
-import sys, traceback
 
 
 class ErrorMessage(Exception):
@@ -67,7 +69,7 @@ class ErrorMessagePromise(Exception):
 
     def __str__(self):
         """Strinify the object."""
-        return get_str(self.key, current_language)
+        return get_str(self.key)
 
 
 def excpetion_handler(fn):
@@ -88,5 +90,5 @@ def excpetion_handler(fn):
         except Exception as e:
             current_app.logger.critical(str(e))
             traceback.print_exc(file=sys.stdout)
-            return {'error': get_str('internal_error', current_language)}, 500
+            return {'error': get_str('internal_error')}, 500
     return handler
