@@ -6,6 +6,7 @@ from core.exception import excpetion_handler
 
 from models.user import UserModel
 
+ENDPOINT = '@RESTFUL_PREFIX::/register'
 
 class UserRegister(Resource):
     parser = reqparse.RequestParser()

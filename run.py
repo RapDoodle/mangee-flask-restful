@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 import sys
 
-# Flask modules
-from flask_restful import Api
-
 # Core modules
-from core.startup import create_app, load_config, init_core_modules, run
-
-# User defined resources
-from resources.user_register import UserRegister
-from resources.demo_resource import DemoResource
-from resources.user_login import UserLogin
-from resources.user_logout import UserLogout
+from core.startup import run
+from core.startup import create_app
+from core.startup import load_config
+from core.startup import init_core_modules
+from core.startup import load_resources
 
 
 if __name__ == '__main__':
@@ -21,14 +16,8 @@ if __name__ == '__main__':
     # Initialize core modules
     init_core_modules(app)
 
-    # Initialize RESTful service
-    api = Api(app)
-
-    # Set up the path RESTful services
-    api.add_resource(UserRegister, app.config['RESTFUL_PREFIX']+'/register')
-    api.add_resource(DemoResource, app.config['RESTFUL_PREFIX']+'/demo')
-    api.add_resource(UserLogin, app.config['RESTFUL_PREFIX']+'/login')
-    api.add_resource(UserLogout, app.config['RESTFUL_PREFIX']+'/logout')
+    # Dynamically load all resources
+    load_resources(app)
     
     # Spin up the server
     run(app)

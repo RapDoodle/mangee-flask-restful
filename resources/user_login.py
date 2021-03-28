@@ -10,6 +10,7 @@ from core.exception import excpetion_handler
 
 from models.user import UserModel
 
+ENDPOINT = '@RESTFUL_PREFIX::/login'
 
 class UserLogin(Resource):
     parser = reqparse.RequestParser()

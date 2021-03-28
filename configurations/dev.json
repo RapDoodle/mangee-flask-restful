@@ -6,6 +6,7 @@
     "HOST": "0.0.0.0",
     "PORT": 80,
     "LOG_PATH": "./error.log",
+    "LOG_FORMAT": "%(asctime)s %(levelname)s: %(message)s",
     "SQLALCHEMY_DATABASE_URI": "sqlite:///data.db",
     "SQLALCHEMY_TRACK_MODIFICATIONS": false,
     "@JWT_AUTH_URL_RULE": "@RESTFUL_PREFIX::/auth",

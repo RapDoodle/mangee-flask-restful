@@ -8,7 +8,9 @@ from json import loads
 from datetime import timedelta
 
 from flask import Flask
+from flask_restful import Api
 
+from settings import IMPORT_RESOURCES
 from core.jwt import init_jwt
 from core.db import db
 from core.db import init_db
@@ -67,7 +69,7 @@ def init_core_modules(app):
         5). HTTP server (testing only)
     
     Args:
-        app (flask.app.Flask): A Flask application
+        app (flask.app.Flask): A Flask application.
 
     """
     # Initialize the launguage system.
@@ -77,7 +79,8 @@ def init_core_modules(app):
     file_handler = logging.FileHandler('app.log')
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(
-        logging.Formatter('%(asctime)s %(levelname)s: %(message)s'))
+        logging.Formatter(app.config.get('LOG_FORMAT', \
+            '%(asctime)s %(levelname)s: %(message)s')))
     app.logger.addHandler(file_handler)
 
     # Setting up flask-JWT
@@ -92,6 +95,40 @@ def init_core_modules(app):
     if (app.config.get('ENABLE_SIMPLE_HTTP_SERVER', False)):
         from utils.http_server import init_http_server
         init_http_server(app)
+
+
+def load_resources(app):
+    """Imports resources dynamically.
+
+    This function will automatically add all the resources 
+    specified in `IMPORT_RESOURCES` of `settings.py`.
+
+    Note:
+        In order to import the resources properly, the object
+        inherited from `Resource` must be named in the module 
+        name's camel-case. For example, the module name of
+        `user_register` should have a class `UserRegister`.
+        Additionally, a variable named `ENDPOINT` must be
+        specified in the module to inidicate the enpoint in
+        which the resource will be attached to. 
+
+    Args:
+        app (flask.app.Flask): A Flask application.
+
+    """
+    api = Api(app)
+    for resource in IMPORT_RESOURCES:
+        # From snake case to camel case
+        resource_class_name = ''.join([n.capitalize() \
+            for n in resource.split('_')])
+
+        # Import modules dynamically
+        resource_module = __import__(f'resources.{resource}', fromlist=[resource])
+        resource_class = getattr(resource_module, resource_class_name)
+        endpoint = getattr(resource_module, 'ENDPOINT')
+        endpoint = re.sub('@(RESTFUL_PREFIX)::*', \
+                    app.config['RESTFUL_PREFIX'], endpoint)
+        api.add_resource(resource_class, endpoint)
 
 
 def load_config(name: str) -> dict:

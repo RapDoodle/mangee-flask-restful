@@ -9,6 +9,8 @@ from core.exception import excpetion_handler
 
 from models.demo import DemoModel
 
+ENDPOINT = '@RESTFUL_PREFIX::/demo'
+
 class DemoResource(Resource):
     add_parser = reqparse.RequestParser()
     add_parser.add_argument('value',
