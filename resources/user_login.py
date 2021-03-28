@@ -6,7 +6,8 @@ from flask_jwt_extended import create_access_token
 from flask_jwt_extended import set_access_cookies
 
 from utils.hash import verify_hash
-from utils.exception import excpetion_handler
+from core.exception import excpetion_handler
+
 from models.user import UserModel
 
 

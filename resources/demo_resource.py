@@ -5,7 +5,8 @@ from flask_restful import reqparse
 from flask_jwt_extended import jwt_required
 
 from core.lang import get_str
-from utils.exception import excpetion_handler
+from core.exception import excpetion_handler
+
 from models.demo import DemoModel
 
 class DemoResource(Resource):

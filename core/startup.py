@@ -4,13 +4,16 @@
 import os
 import re
 import logging
-from datetime import timedelta
-from utils.constants import CONFIG_PATH
-from flask import Flask
 from json import loads
+from datetime import timedelta
+
+from flask import Flask
+
 from core.jwt import init_jwt
-from core.db import init_db, db
+from core.db import db
+from core.db import init_db
 from core.lang import init_lang
+from utils.constants import CONFIG_PATH
 
 
 def create_app(name: str, config: dict) -> Flask:

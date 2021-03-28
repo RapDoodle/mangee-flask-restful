@@ -7,6 +7,7 @@ The functions provided are most likely to be used with
 """
 
 from utils.hash import verify_hash
+
 from models.user import UserModel
 
 

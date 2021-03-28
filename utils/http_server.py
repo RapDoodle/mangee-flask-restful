@@ -20,10 +20,12 @@ Example:
 """
 
 from os import path
+
 from flask import Blueprint
 from flask import redirect
 from flask import current_app
 from flask import send_from_directory
+
 from utils.constants import SERVE_FOLDER
 
 DEFAULT_404 = """<h1 style="text-align:center;">404 Not Found</h1>

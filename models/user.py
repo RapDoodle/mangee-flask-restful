@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from flask_language import current_language
+
 from core.db import db
 from core.lang import get_str
+from core.exception import ErrorMessagePromise
+
 from utils.hash import hash_data
-from utils.exception import ErrorMessagePromise
-from utils.validation import is_valid_username, is_valid_password
+from utils.validation import is_valid_username
+from utils.validation import is_valid_password
 
 
 class UserModel(db.Model):

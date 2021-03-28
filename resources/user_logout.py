@@ -5,7 +5,8 @@ from flask_restful import reqparse
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import unset_jwt_cookies
 
-from utils.exception import excpetion_handler
+from core.exception import excpetion_handler
+
 from models.user import UserModel
 
 
