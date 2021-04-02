@@ -18,7 +18,7 @@ from core.lang import init_lang
 from utils.constants import CONFIG_PATH
 
 
-def create_app(name: str, config: dict) -> Flask:
+def create_app(name: str, config_name: str) -> Flask:
     """Creates a flask object based on configurations.
 
     Note:
@@ -30,12 +30,13 @@ def create_app(name: str, config: dict) -> Flask:
             cases, please use __name__. For more information,
             please vist:
             https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask
-        config (dict): A dictionary containing configurations.
+        config_name (str): The name of the configuration
 
     Returns:
         flask.app.Flask: The configured flask application.
 
     """
+    config = load_config(config_name)
     app = Flask(name)
     for key in config.keys():
         if key.startswith('@'):
