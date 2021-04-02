@@ -55,6 +55,12 @@ def create_app(name: str, config: dict) -> Flask:
             app.config[key[1:]] = value
             continue
         app.config[key] = config[key]
+        
+    # Initialize core modules
+    init_core_modules(app)
+
+    # Dynamically load all resources
+    load_resources(app)
     return app
 
 
