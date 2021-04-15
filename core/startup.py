@@ -38,23 +38,9 @@ def create_app(name: str, config_name: str) -> Flask:
     """
     config = load_config(config_name)
     app = Flask(name)
+
+    # Set configuration into the app
     for key in config.keys():
-        if key.startswith('@'):
-            # Parser of special configuration
-            value = config[key]
-            if isinstance(value, dict):
-                # Cases where direct parsing is not possible
-                func_type = value['type']
-                if func_type == 'timedelta':
-                    assert isinstance(value['args'], dict)
-                    value = timedelta(**value['args'])
-            elif isinstance(value, str):
-                # Reference with '@'
-                value = re.sub('@(RESTFUL_PREFIX)::*', \
-                    config['RESTFUL_PREFIX'], config[key])
-            # Remove the prefix '@' before storing into the config
-            app.config[key[1:]] = value
-            continue
         app.config[key] = config[key]
         
     # Initialize core modules
@@ -139,7 +125,7 @@ def load_resources(app):
 
 
 def load_config(name: str) -> dict:
-    """Reads configuration and retusn as a dict.
+    """Reads and parses configuration and returns as a dict.
 
     Args:
         name (str): The name of the configuration. By default, 
@@ -156,15 +142,46 @@ def load_config(name: str) -> dict:
         dict: The file in the form of python dictionary.
     
     """
-    return loads(open(os.path.join(CONFIG_PATH, name+'.json'), 'r').read())
+    config_raw = loads(open(os.path.join(CONFIG_PATH, name+'.json'), 'r').read())
+    config_parsed = {}
+
+    # Parser for configurations
+    for key in config_raw.keys():
+        if key.startswith('@'):
+            # Parser of special configuration
+            value = config_raw[key]
+            if isinstance(value, dict):
+                # Cases where direct parsing is not possible
+                func_type = value['type']
+                if func_type == 'timedelta':
+                    assert isinstance(value['args'], dict)
+                    value = timedelta(**value['args'])
+            elif isinstance(value, str):
+                # Reference with '@'
+                value = re.sub('@(RESTFUL_PREFIX)::*', \
+                    config_raw['RESTFUL_PREFIX'], config_raw[key])
+            # Remove the prefix '@' before storing into the config
+            config_parsed[key[1:]] = value
+            continue
+        config_parsed[key] = config_raw[key]
+    return config_parsed
 
 
 def run(app):
-    """Spins up a Flask application.
+    """Spins up a Flask application (development server).
     
     Args:
         app (flask.app.Flask): A Flask application
 
     """
-    app.run(host=app.config.get('HOST', '127.0.0.1'), 
-        port=app.config.get('PORT', 5000))
+    if app.config.get('ENABLE_HTTPS', False):
+        ssl_context = (
+            app.config.get('HTTPS_CERT_PATH'), 
+            app.config.get('HTTPS_PRIVATE_KEY_PATH'))
+    else:
+        ssl_context = None
+    print(ssl_context)
+    app.run(
+        host=app.config.get('HOST', '127.0.0.1'), 
+        port=app.config.get('PORT', 5000),
+        ssl_context=ssl_context)

@@ -23,5 +23,8 @@
     "HTTP_SERVER_INDEX_PAGE": "index.html",
     "HTTP_SERVER_404_REDIRECT": "",
     "HTTP_SERVER_REWRITE_ENGINE": true,
-    "HTTP_SERVER_REWRITE_BASE": ""
+    "HTTP_SERVER_REWRITE_BASE": "",
+    "ENABLE_HTTPS": false,
+    "HTTPS_CERT_PATH": "./security/cert.pem",
+    "HTTPS_PRIVATE_KEY_PATH": "./security/privkey.pem"
 }
