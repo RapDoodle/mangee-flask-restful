@@ -56,10 +56,8 @@ def index(filename):
     """Mapping of the root directory"""
     if len(filename) == 0 and current_app.config['HTTP_SERVER_INDEX_REDIRECT']:
         # For example, redirect '/' to 'index.html'
-        print(current_app.config['HTTP_SERVER_INDEX_PAGE'])
         return redirect(current_app.config['HTTP_SERVER_INDEX_PAGE'], code=302)
     return server_router('.', filename)
-
 
 
 @server.route('/<path:folder>/<path:file_path>', methods=['GET'])
@@ -70,7 +68,7 @@ def send_static_file(folder, file_path):
 @server.errorhandler(404)
 def not_found_handler(e):
     if current_app.config['HTTP_SERVER_REWRITE_ENGINE']:
-        return redirect(current_app.config['HTTP_SERVER_REWRITE_BASE'], code=302)
+        return server_router('.', current_app.config.get('HTTP_SERVER_REWRITE_TO'))
     redirect_path = current_app.config.get('HTTP_SERVER_404_REDIRECT', None)
     if redirect_path is not None:
         return redirect(redirect_path, code=302)
@@ -78,7 +76,6 @@ def not_found_handler(e):
 
 
 def server_router(folder, file_path):
-    print(f'./{SERVE_FOLDER}/{folder}/{file_path}')
     if path.exists(f'./{SERVE_FOLDER}/{folder}/{file_path}'):
         return send_from_directory(directory=f'./{SERVE_FOLDER}/{folder}', 
             filename=file_path)

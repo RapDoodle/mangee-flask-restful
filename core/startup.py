@@ -180,7 +180,6 @@ def run(app):
             app.config.get('HTTPS_PRIVATE_KEY_PATH'))
     else:
         ssl_context = None
-    print(ssl_context)
     app.run(
         host=app.config.get('HOST', '127.0.0.1'), 
         port=app.config.get('PORT', 5000),
