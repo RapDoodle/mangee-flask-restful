@@ -33,7 +33,7 @@ This project is still under development. Please do not use the current version f
 - Spinup a development server
 
   ```bash
-  python3 run.py dev
+  $ python3 run.py dev
   ```
   In the last argument, `dev` specifies the name of the configuration. Please visit the documents on configurations under the `docs` folder for more information about the configurations.
 
