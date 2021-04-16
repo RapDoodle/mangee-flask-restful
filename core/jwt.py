@@ -3,9 +3,6 @@
 
 from flask_jwt_extended import JWTManager
 
-from utils.auth import authenticate
-from utils.auth import identity
-
 jwt = JWTManager()
 
 
