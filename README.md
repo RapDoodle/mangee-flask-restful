@@ -12,18 +12,16 @@ This project is still under development. Please do not use the current version f
   git clone https://github.com/RapDoodle/mangee-flask-restful.git
   ```
 
-- Install python (Ubuntu)
-
-  ```bash
-  sudo add-apt-repository ppa:jonathonf/python-3.8
-  ```
-
-  For other Linux distribution or other operating system, just Google it ;)
-
 - Install required Python packages
 
+  For Linux users
   ```bash
-  pip3 install -r requirements.txt
+  $ pip3 install -r requirements.txt
+  ```
+
+  For Windows users
+  ```bash
+  $ pip install -r requirements.txt
   ```
 
   Please be noted that some dependencies may not be installed on Debian and Ubuntu. If an error occurred while installing `bcrypt`, run the following command
@@ -32,32 +30,18 @@ This project is still under development. Please do not use the current version f
   sudo apt-get install build-essential libffi-dev python-dev
   ```
 
-- Install MySQL (Ubuntu)
+- Spinup a development server
 
   ```bash
-  sudo apt-get update
-  sudo apt-get install mysql-server
+  python3 run.py dev
   ```
-
-- Configure MySQL (Ubuntu)
-
-  ```bash
-  sudo mysql_secure_installation utility
-  ```
-
-  For more information, please Google it
-
-- Start MySQL
-
-  ```bash
-  sudo systemctl start mysql
-  ```
+  In the last argument, `dev` specifies the name of the configuration. Please visit the documents on configurations under the `docs` folder for more information about the configurations.
 
 # Contributors
-- Bohui WU (Bowen)
+- Bowen WU (@RapDoodle)
 
 # License
-The project is licensed under the GNU General Public License v3. To obtain a license for commercial use, please contact bowenbhwu#gmail.com (replace # with @)
+The project is licensed under the GNU General Public License v3.
 
 # Copyright
 Copyright (c) 2021.
