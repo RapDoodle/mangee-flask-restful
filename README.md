@@ -1,10 +1,7 @@
 # Mangee Flask-RESTful
 Mangee Flask-RESTful is a template/framework designed to simplify the process of building scalable RESTful Flask applications.
 
-## Note
-This project is still under development. Please do not use the current version for production purposes.
-
-# Getting Started
+## Getting Started
 
 - Clone the repository
 
@@ -37,11 +34,11 @@ This project is still under development. Please do not use the current version f
   ```
   In the last argument, `dev` specifies the name of the configuration. Please visit the documents on configurations under the `docs` folder for more information about the configurations.
 
-# Contributors
+## Contributors
 - Bowen WU (@RapDoodle)
 
-# License
+## License
 The project is licensed under the GNU General Public License v3.
 
-# Copyright
+## Copyright
 Copyright (c) 2021.
