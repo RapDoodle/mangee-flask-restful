@@ -52,8 +52,8 @@ In this example, we will demonstrate the internationalization of `en-US` and `zh
 
 1. To support multiple languages, the frontend can be adapted to changing the cookie `lang`. When a request is sent to the server, the cookie is sent along with the request. When the server receives the request, as long as the returned message calls the `get_str` function, the correct string for that language will be displayed. If the request contains an unknown language to the server, the default language will be used.
 
-# Credits
+## Credits
 - Flask-Language 0.1.0
 
-# Author
+## Author
 - Bowen WU (@RapDoodle)
