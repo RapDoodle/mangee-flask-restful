@@ -18,7 +18,7 @@ from core.lang import init_lang
 from utils.constants import CONFIG_PATH
 
 
-def create_app(name: str, config_name: str) -> Flask:
+def create_app(name: str, config_name: str, init_tables=True) -> Flask:
     """Creates a flask object based on configurations.
 
     Note:
@@ -31,6 +31,8 @@ def create_app(name: str, config_name: str) -> Flask:
             please vist:
             https://flask.palletsprojects.com/en/1.1.x/api/#flask.Flask
         config_name (str): The name of the configuration
+        init_tables (bool): A boolean indicating whether or  
+            not to create tables (if needed)
 
     Returns:
         flask.app.Flask: The configured flask application.
@@ -48,6 +50,11 @@ def create_app(name: str, config_name: str) -> Flask:
 
     # Dynamically load all resources
     load_resources(app)
+
+    if init_tables:
+        with app.app_context():
+            db.create_all()
+
     return app
 
 
@@ -184,3 +191,4 @@ def run(app):
         host=app.config.get('HOST', '127.0.0.1'), 
         port=app.config.get('PORT', 5000),
         ssl_context=ssl_context)
+
