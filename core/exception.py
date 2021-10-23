@@ -3,6 +3,8 @@
 import sys
 import traceback
 
+from werkzeug.exceptions import BadRequest
+
 from flask import current_app
 from flask_restful import abort
 from flask_language import current_language
@@ -85,7 +87,7 @@ def excpetion_handler(fn):
     def handler(*args, **kwargs):
         try:
             return fn(*args, **kwargs)
-        except (ErrorMessage, ErrorMessagePromise) as e:
+        except (ErrorMessage, ErrorMessagePromise, BadRequest) as e:
             abort(400, error=str(e))
         except Exception as e:
             current_app.logger.critical(str(e))
