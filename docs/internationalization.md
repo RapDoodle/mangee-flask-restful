@@ -21,7 +21,7 @@ In this example, we will demonstrate the internationalization of `en-US` and `zh
 
 1. To display the text to the user, for example,  `INVALID_PASSWORD`, first import the module.
     ```python
-    from core.lang import get_str]
+    from core.lang import get_str
     ```
     Then, call the `get_str` function.
     ```python
