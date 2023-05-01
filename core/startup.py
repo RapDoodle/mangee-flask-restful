@@ -44,6 +44,9 @@ def create_app(name: str, config_name: str, init_tables=True) -> Flask:
     # Set configuration into the app
     for key in config.keys():
         app.config[key] = config[key]
+    
+    # Initialize secret key
+    init_secrets(app)
         
     # Initialize core modules
     init_core_modules(app)
@@ -56,6 +59,30 @@ def create_app(name: str, config_name: str, init_tables=True) -> Flask:
             db.create_all()
 
     return app
+
+
+def init_secrets(app):
+    """Initializes the secrete key
+    
+    Args:
+        app (flask.app.Flask): A Flask application.
+    """
+    secrets_path = app.config.get('SECRETS_PATH', './secrets')
+    secret_key_file = os.path.join(secrets_path, 'secret_key')
+    
+    if not os.path.exists(secrets_path):
+        os.makedirs(secrets_path)
+
+    if not os.path.isfile(secret_key_file):
+        import secrets
+        with open(secret_key_file, 'wb') as f:
+            secret_key = secrets.token_bytes(32)  # Generate a random 32-byte secret key
+            f.write(secret_key)
+    else:
+        with open(secret_key_file, 'rb') as f:
+            secret_key = f.read()
+
+    app.config['SECRET_KEY'] = secret_key
 
 
 def init_core_modules(app):
